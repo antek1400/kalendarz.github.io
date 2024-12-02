@@ -4,254 +4,278 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wgraj i Zmień Rozmiar Obrazu z Kalendarzem</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cherish&family=Dancing+Script:wght@400..700&family=Meie+Script&display=swap" rel="stylesheet">
     <style>
-    /* Global Styles */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f7fa;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    margin: 0;
-    padding: 20px;
-}
+        /* Global Styles */
+        body {
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
 
-/* Container for the Image Upload and Options */
-.image-upload-container,
-.resize-options,
-.days-options,
-.calendar-options {
-    background-color: #ffffff;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    width: 100%;
-    max-width: 600px;
-}
+        /* Selekcja czcionek w formularzu */
+        select, input[type="color"], input[type="number"], input[type="text"] {
+            font-family: inherit; /* Używanie aktualnej czcionki */
+        }
 
-/* Image Container */
-.image-container {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #e0e0e0;
-    width: auto;
-    margin-top: 20px;
-    border-radius: 10px;
-    padding: 20px;
-}
+        /* Container for the Image Upload and Options */
+        .image-upload-container,
+        .resize-options,
+        .days-options,
+        .calendar-options {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 600px;
+        }
 
-.image-container img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 10px;
-    transition: transform 0.3s ease-in-out;
-}
+        /* Image Container */
+        .image-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #e0e0e0;
+            width: auto;
+            margin-top: 20px;
+            border-radius: 10px;
+            padding: 20px;
+        }
 
-.image-container img:hover {
-    transform: scale(1.05);
-}
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            transition: transform 0.3s ease-in-out;
+        }
 
-/* Save Button */
-.save-button {
-    margin-top: 20px;
-    padding: 12px 24px;
-    font-size: 16px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s, transform 0.2s;
-}
+        .image-container img:hover {
+            transform: scale(1.05);
+        }
 
-.save-button:hover {
-    background-color: #45a049;
-    transform: translateY(-2px);
-}
+        /* Save Button */
+        .save-button {
+            margin-top: 20px;
+            padding: 12px 24px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.2s;
+        }
 
-/* Input Fields and Labels */
-input[type="text"],
-input[type="number"],
-input[type="color"],
-select {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    font-size: 16px;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-}
+        .save-button:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+        }
 
-input[type="text"]:focus,
-input[type="number"]:focus,
-select:focus,
-input[type="color"]:focus {
-    background-color: #e0f7fa;
-    border-color: #00796b;
-    outline: none;
-}
+        /* Input Fields and Labels */
+        input[type="text"],
+        input[type="number"],
+        input[type="color"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            font-size: 16px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
 
-/* Calendar Display Styles */
-.calendar-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 18px;
-    font-family: 'Arial', sans-serif;
-    text-align: center;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
-    width: 80%;
-    max-width: 400px;
-}
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        input[type="color"]:focus {
+            background-color: #e0f7fa;
+            border-color: #00796b;
+            outline: none;
+        }
 
-.calendar-text div {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
+        /* Calendar Display Styles */
+        .calendar-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 18px;
+            font-family: 'Cherish', 'Meie Script', 'Dancing Script', 'Arial', sans-serif;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+            width: 80%;
+            max-width: 400px;
+        }
 
-.calendar-text div div {
-    width: 50px;
-    height: 50px;
-    margin: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    color: #333;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
+        .calendar-text div {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
 
-.calendar-text div div.empty {
-    background-color: transparent;
-    cursor: default;
-}
+        .calendar-text div div {
+            width: 50px;
+            height: 50px;
+            margin: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
 
-.calendar-text div div.weekend {
-    background-color: rgba(255, 87, 34, 0.7);
-    color: white;
-}
+        .calendar-text div div.empty {
+            background-color: transparent;
+            cursor: default;
+        }
 
-.calendar-text div div.occupied {
-    background-color: rgba(0, 128, 0, 0.7);
-    color: white;
-}
+        .calendar-text div div.weekend {
+            background-color: rgba(255, 87, 34, 0.7);
+            color: white;
+        }
 
-.calendar-text div div.unavailable {
-    background-color: rgba(128, 128, 128, 0.7);
-    color: white;
-}
+        .calendar-text div div.occupied {
+            background-color: rgba(0, 128, 0, 0.7);
+            color: white;
+        }
 
-/* Media Queries for Mobile */
-@media (max-width: 600px) {
-    .resize-options,
-    .image-upload-container,
-    .save-button {
-        width: 100%;
-        margin: 10px 0;
-    }
+        .calendar-text div div.unavailable {
+            background-color: rgba(128, 128, 128, 0.7);
+            color: white;
+        }
 
-    .calendar-text {
-        font-size: 14px;
-        width: 90%;
-        padding: 10px;
-    }
+        /* Media Queries for Mobile */
+        @media (max-width: 600px) {
+            .resize-options,
+            .image-upload-container,
+            .save-button {
+                width: 100%;
+                margin: 10px 0;
+            }
 
-    canvas {
-        max-width: 100%;
-        height: auto;
-    }
-}
+            .calendar-text {
+                font-size: 14px;
+                width: 90%;
+                padding: 10px;
+            }
 
+            canvas {
+                max-width: 100%;
+                height: auto;
+            }
+        }
     </style>
 </head>
 <body>
 
-<div class="image-upload-container">
-    <input type="file" id="imageInput" accept="image/*">
-</div>
+    <div class="image-upload-container">
+        <input type="file" id="imageInput" accept="image/*">
+    </div>
 
-<div class="resize-options">
-    <label for="imageSize">Wybierz Rozmiar Obrazu: </label>
-    <select id="imageSize">
-        <option value="540x960">Story</option>
-        <option value="540x540">Post</option>
-    </select>
-</div>
+    <div class="resize-options">
+        <label for="imageSize">Wybierz Rozmiar Obrazu: </label>
+        <select id="imageSize">
+            <option value="540x960">Story</option>
+            <option value="540x540">Post</option>
+        </select>
+    </div>
 
-<div class="days-options">
-    <label for="dayCount">Wybierz Liczbę Dni: </label>
-    <select id="dayCount">
-        <option value="28">28</option>
-        <option value="30">30</option>
-        <option value="31">31</option>
-    </select>
-</div>
+    <div class="days-options">
+        <label for="dayCount">Wybierz Liczbę Dni: </label>
+        <select id="dayCount">
+            <option value="28">28</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+        </select>
+    </div>
 
-<div class="calendar-options">
-    <!-- nowe -->
-    <label for="monthSelect">Wybierz Miesiąc:</label>
-    <select id="monthSelect">
-        <option value="1">Styczeń</option>
-        <option value="2">Luty</option>
-        <option value="3">Marzec</option>
-        <option value="4">Kwiecień</option>
-        <option value="5">Maj</option>
-        <option value="6">Czerwiec</option>
-        <option value="7">Lipiec</option>
-        <option value="8">Sierpień</option>
-        <option value="9">Wrzesień</option>
-        <option value="10">Październik</option>
-        <option value="11">Listopad</option>
-        <option value="12">Grudzień</option>
-    </select>
+    <div class="calendar-options">
+        <label for="monthSelect">Wybierz Miesiąc:</label>
+        <select id="monthSelect">
+            <option value="1">Styczeń</option>
+            <option value="2">Luty</option>
+            <option value="3">Marzec</option>
+            <option value="4">Kwiecień</option>
+            <option value="5">Maj</option>
+            <option value="6">Czerwiec</option>
+            <option value="7">Lipiec</option>
+            <option value="8">Sierpień</option>
+            <option value="9">Wrzesień</option>
+            <option value="10">Październik</option>
+            <option value="11">Listopad</option>
+            <option value="12">Grudzień</option>
+        </select>
 
-    <label for="fontSize">Rozmiar Tekstu: </label>
-    <input type="number" id="fontSize" value="18" min="10" max="50"> <br>
+        <label for="fontSize">Rozmiar Tekstu: </label>
+        <input type="number" id="fontSize" value="18" min="10" max="50"> <br>
 
-    <label for="fontColor">Kolor Tekstu: </label>
-    <input type="color" id="fontColor" value="#ffffff"> <br>
+        <label for="fontColor">Kolor Tekstu: </label>
+        <input type="color" id="fontColor" value="#ffffff"> <br>
 
-    <label for="fontFamily">Czcionka: </label>
-    <select id="fontFamily">
-        <option value="Arial">Arial</option>
-        <option value="Verdana">Verdana</option>
-        <option value="Courier New">Courier New</option>
-    </select> <br>
+        <label for="fontFamily">Czcionka: </label>
+        <select id="fontFamily">
+            <option value="Arial">Arial</option>
+            <option value="Verdana">Verdana</option>
+            <option value="Courier New">Courier New</option>
+            <option value="'Roboto'">Roboto</option>
+            <option value="'Open Sans'">Open Sans</option>
+            <option value="'Poppins'">Poppins</option>
+            <option value="'Meie Script'">Meie Script</option>
+            <option value="'Cherish'">Cherish</option>
+            <option value="'Dancing Script'">Dancing Script</option>
+        </select> <br>
 
-    <label for="occupiedColor">Kolor Zajętych Dni: </label>
-    <input type="color" id="occupiedColor" value="#FF6347"> <br>
+        <label for="occupiedColor">Kolor Zajętych Dni: </label>
+        <input type="color" id="occupiedColor" value="#FF6347"> <br>
 
-    <label for="occupiedDays">Dni Zajęte (po przecinku): </label>
-    <input type="text" id="occupiedDays" placeholder="np. 1,3,5,7"><br>
+        <label for="occupiedDays">Dni Zajęte (po przecinku): </label>
+        <input type="text" id="occupiedDays" placeholder="np. 5,10,15"> <br>
 
-    <label for="unavailableColor">Kolor Niedostępnych Dni: </label>
-    <input type="color" id="unavailableColor" value="#808080"><br>
+        <label for="unavailableColor">Kolor Niedostępnych Dni: </label>
+        <input type="color" id="unavailableColor" value="#A9A9A9"> <br>
 
-    <label for="unavailableDays">Dni Niedostępne (po przecinku): </label>
-    <input type="text" id="unavailableDays" placeholder="np. 2,4,6"><br>
-</div>
+        <label for="unavailableDays">Dni Niedostępne (po przecinku): </label>
+        <input type="text" id="unavailableDays" placeholder="np. 10,12,15">
+    </div>
 
-<div class="image-container">
-    <img id="uploadedImage" src="" alt="Wgrany Obraz">
-</div>
+    <div class="image-container">
+        <img id="imageDisplay" src="" alt="Obraz" style="display: none;">
+        <canvas id="imageCanvas" style="display: none;"></canvas>
+    </div>
 
-<button class="save-button" id="saveButton">Zapisz Obraz</button>
+    <button class="save-button" id="saveButton">Zapisz Obraz</button>
+
+
+
+</body>
+</html>
+
+
+
+
+
+
 
 <script>
     let occupiedDays = [];
@@ -307,19 +331,22 @@ input[type="color"]:focus {
         ctx.font = `${fontSize * 1.5}px ${fontFamily}`;
         ctx.fillStyle = fontColor;
         ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
+        ctx.textBaseline = 'middle';
         const xCenter = canvas.width / 2;
-        const yTop = canvas.height * 0.15; // Adjusted for vertical centering in Story format
+        const yTop = canvas.height * 0.25; // Adjusted for vertical centering
         ctx.fillText(selectedMonth, xCenter, yTop);
 
         // Calculate positions for the calendar
         const daysPerRow = 7;
         const dayWidth = 50;
         const dayHeight = 50;
-        const margin = 5;
+        const margin = 10;
 
-        const startX = (canvas.width - (daysPerRow * (dayWidth + margin) - margin)) / 2;
-        const startY = yTop + 100; // Adjusted margin from the title
+        const gridWidth = daysPerRow * (dayWidth + margin) - margin;
+        const gridHeight = Math.ceil(totalDays / daysPerRow) * (dayHeight + margin) - margin;
+
+        const startX = (canvas.width - gridWidth) / 2;
+        const startY = (canvas.height - gridHeight) / 2 + 20; // Adjusted to account for the title
 
         // Draw calendar days
         ctx.font = `${fontSize}px ${fontFamily}`;
@@ -345,16 +372,12 @@ input[type="color"]:focus {
         // Add descriptions below the calendar
         const descriptions = ["Wolne", "Zajęte", "Niedostępne"];
         const colors = [fontColor, occupiedColor, unavailableColor];
-        const startXText = canvas.width / 2; // Align to center
-        const startYText = startY + Math.ceil(totalDays / daysPerRow) * (dayHeight + margin) + 50;
+        const descriptionYStart = startY + gridHeight + 40;
 
-        ctx.font = `${fontSize}px ${fontFamily}`;
         descriptions.forEach((text, index) => {
-            const x = startXText;
-            const y = startYText + (index * 30);
-
+            const descriptionY = descriptionYStart + index * 30;
             ctx.fillStyle = colors[index];
-            ctx.fillText(text, x, y);
+            ctx.fillText(text, xCenter, descriptionY);
         });
 
         // Display the result
@@ -363,6 +386,7 @@ input[type="color"]:focus {
         imageContainer.appendChild(canvas);
     };
 }
+
 
 
 const monthSelect = document.getElementById('monthSelect');
