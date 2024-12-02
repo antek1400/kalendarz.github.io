@@ -1,66 +1,183 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload and Resize Image with Calendar</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Wgraj i Zmień Rozmiar Obrazu z Kalendarzem</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-        }
+    /* Global Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7fa;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
 
-        .image-upload-container {
-            margin-bottom: 20px;
-        }
+/* Container for the Image Upload and Options */
+.image-upload-container,
+.resize-options,
+.days-options,
+.calendar-options {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 600px;
+}
 
-        .resize-options {
-            margin-bottom: 20px;
-        }
+/* Image Container */
+.image-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #e0e0e0;
+    width: auto;
+    margin-top: 20px;
+    border-radius: 10px;
+    padding: 20px;
+}
 
-        .image-container {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f0f0f0;
-        }
+.image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
+}
 
-        canvas {
-            border: 1px solid #ccc;
-        }
+.image-container img:hover {
+    transform: scale(1.05);
+}
 
-        .calendar-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-size: 16px;
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
+/* Save Button */
+.save-button {
+    margin-top: 20px;
+    padding: 12px 24px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.2s;
+}
 
-        .save-button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
+.save-button:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
 
-        .save-button:hover {
-            background-color: #45a049;
-        }
+/* Input Fields and Labels */
+input[type="text"],
+input[type="number"],
+input[type="color"],
+select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    font-size: 16px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus,
+input[type="color"]:focus {
+    background-color: #e0f7fa;
+    border-color: #00796b;
+    outline: none;
+}
+
+/* Calendar Display Styles */
+.calendar-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 18px;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+    width: 80%;
+    max-width: 400px;
+}
+
+.calendar-text div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.calendar-text div div {
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.calendar-text div div.empty {
+    background-color: transparent;
+    cursor: default;
+}
+
+.calendar-text div div.weekend {
+    background-color: rgba(255, 87, 34, 0.7);
+    color: white;
+}
+
+.calendar-text div div.occupied {
+    background-color: rgba(0, 128, 0, 0.7);
+    color: white;
+}
+
+.calendar-text div div.unavailable {
+    background-color: rgba(128, 128, 128, 0.7);
+    color: white;
+}
+
+/* Media Queries for Mobile */
+@media (max-width: 600px) {
+    .resize-options,
+    .image-upload-container,
+    .save-button {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .calendar-text {
+        font-size: 14px;
+        width: 90%;
+        padding: 10px;
+    }
+
+    canvas {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
     </style>
 </head>
 <body>
@@ -70,175 +187,261 @@
 </div>
 
 <div class="resize-options">
-    <label for="imageSize">Select Image Size:</label>
+    <label for="imageSize">Wybierz Rozmiar Obrazu: </label>
     <select id="imageSize">
-        <option value="540x960">540x960</option>
-        <option value="540x540">1080x1080</option>
+        <option value="540x960">Story</option>
+        <option value="540x540">Post</option>
     </select>
 </div>
 
-<div class="image-container">
-    <canvas id="canvas"></canvas>
-    <div id="calendar" class="calendar-text"></div>
+<div class="days-options">
+    <label for="dayCount">Wybierz Liczbę Dni: </label>
+    <select id="dayCount">
+        <option value="28">28</option>
+        <option value="30">30</option>
+        <option value="31">31</option>
+    </select>
 </div>
 
-<button class="save-button" id="saveButton">Save Image</button>
+<div class="calendar-options">
+    <!-- nowe -->
+    <label for="monthSelect">Wybierz Miesiąc:</label>
+    <select id="monthSelect">
+        <option value="1">Styczeń</option>
+        <option value="2">Luty</option>
+        <option value="3">Marzec</option>
+        <option value="4">Kwiecień</option>
+        <option value="5">Maj</option>
+        <option value="6">Czerwiec</option>
+        <option value="7">Lipiec</option>
+        <option value="8">Sierpień</option>
+        <option value="9">Wrzesień</option>
+        <option value="10">Październik</option>
+        <option value="11">Listopad</option>
+        <option value="12">Grudzień</option>
+    </select>
+
+    <label for="fontSize">Rozmiar Tekstu: </label>
+    <input type="number" id="fontSize" value="18" min="10" max="50"> <br>
+
+    <label for="fontColor">Kolor Tekstu: </label>
+    <input type="color" id="fontColor" value="#ffffff"> <br>
+
+    <label for="fontFamily">Czcionka: </label>
+    <select id="fontFamily">
+        <option value="Arial">Arial</option>
+        <option value="Verdana">Verdana</option>
+        <option value="Courier New">Courier New</option>
+    </select> <br>
+
+    <label for="occupiedColor">Kolor Zajętych Dni: </label>
+    <input type="color" id="occupiedColor" value="#FF6347"> <br>
+
+    <label for="occupiedDays">Dni Zajęte (po przecinku): </label>
+    <input type="text" id="occupiedDays" placeholder="np. 1,3,5,7"><br>
+
+    <label for="unavailableColor">Kolor Niedostępnych Dni: </label>
+    <input type="color" id="unavailableColor" value="#808080"><br>
+
+    <label for="unavailableDays">Dni Niedostępne (po przecinku): </label>
+    <input type="text" id="unavailableDays" placeholder="np. 2,4,6"><br>
+</div>
+
+<div class="image-container">
+    <img id="uploadedImage" src="" alt="Wgrany Obraz">
+</div>
+
+<button class="save-button" id="saveButton">Zapisz Obraz</button>
 
 <script>
-    // Funkcja do kompresji obrazu
+    let occupiedDays = [];
+    let unavailableDays = [];
+    const imageInput = document.getElementById('imageInput');
+    const sizeSelect = document.getElementById('imageSize');
+    const dayCountSelect = document.getElementById('dayCount');
+    const fontSizeInput = document.getElementById('fontSize');
+    const fontColorInput = document.getElementById('fontColor');
+    const fontFamilyInput = document.getElementById('fontFamily');
+    const occupiedColorInput = document.getElementById('occupiedColor');
+    const unavailableColorInput = document.getElementById('unavailableColor');
+    const occupiedDaysInput = document.getElementById('occupiedDays');
+    const unavailableDaysInput = document.getElementById('unavailableDays');
+
     function compressImage(file, width, height, callback) {
         const reader = new FileReader();
         reader.onload = function (e) {
             const img = new Image();
             img.onload = function () {
-                // Ustawiamy wymiary canvas na wybrany rozmiar
-                const canvas = document.getElementById('canvas');
-                canvas.width = width; // Ustawiamy szerokość canvas
-                canvas.height = height; // Ustawiamy wysokość canvas
+                const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
+                canvas.width = width;
+                canvas.height = height;
 
-                // Rysowanie obrazu na canvasie w wybranym rozmiarze (tło)
                 ctx.drawImage(img, 0, 0, width, height);
 
-                // Zwracanie skompresowanego obrazu jako Data URL
                 const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
-                callback(compressedDataUrl, canvas);
+                callback(compressedDataUrl);
             };
             img.src = e.target.result;
         };
         reader.readAsDataURL(file);
     }
 
-    // Funkcja do generowania dni w miesiącu
-    function getDaysInMonth(year, month) {
-        const days = [];
-        const date = new Date(year, month, 1);
-        while (date.getMonth() === month) {
-            days.push(new Date(date));
-            date.setDate(date.getDate() + 1);
-        }
-        return days;
-    }
+    function drawCalendarOnImage(imageUrl, totalDays, fontSize, fontColor, fontFamily, occupiedColor, unavailableColor) {
+    const monthSelect = document.getElementById('monthSelect');
+    const selectedMonth = monthSelect.options[monthSelect.selectedIndex].text;
 
-    // Funkcja do rysowania kalendarza na canvasie
-    function drawCalendarOnCanvas(canvas, ctx) {
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = today.getMonth();
-        const days = getDaysInMonth(year, month);
+    const image = new Image();
+    image.src = imageUrl;
 
-        const daysPerRow = 7; // 7 dni w tygodniu
-        const dayWidth = 40;  // Szerokość każdego dnia
-        const dayHeight = 40; // Wysokość każdego dnia
-        const margin = 5;     // Margines pomiędzy dniami
+    image.onload = function () {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = image.width;
+        canvas.height = image.height;
 
-        const startX = (canvas.width - (daysPerRow * (dayWidth + margin) - margin)) / 2; // Wyśrodkowanie X
-        const startY = (canvas.height - (Math.ceil(days.length / daysPerRow) * (dayHeight + margin) - margin)) / 2; // Wyśrodkowanie Y
+        // Draw the uploaded image
+        ctx.drawImage(image, 0, 0);
 
-        let dayIndex = 0;
-        for (let row = 0; row < Math.ceil(days.length / daysPerRow); row++) {
-            for (let col = 0; col < daysPerRow; col++) {
-                if (dayIndex < days.length) {
-                    const day = days[dayIndex];
+        // Draw the selected month as the title
+        ctx.font = `${fontSize * 1.5}px ${fontFamily}`;
+        ctx.fillStyle = fontColor;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        const xCenter = canvas.width / 2;
+        const yTop = canvas.height * 0.15; // Adjusted for vertical centering in Story format
+        ctx.fillText(selectedMonth, xCenter, yTop);
 
-                    const x = startX + (col * (dayWidth + margin)); // Pozycja X
-                    const y = startY + (row * (dayHeight + margin)); // Pozycja Y
+        // Calculate positions for the calendar
+        const daysPerRow = 7;
+        const dayWidth = 50;
+        const dayHeight = 50;
+        const margin = 5;
 
-                    // Rysowanie każdego dnia na canvasie
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-                    ctx.beginPath();
-                    ctx.arc(x + dayWidth / 2, y + dayHeight / 2, dayWidth / 2, 0, 2 * Math.PI);
-                    ctx.fill();
+        const startX = (canvas.width - (daysPerRow * (dayWidth + margin) - margin)) / 2;
+        const startY = yTop + 100; // Adjusted margin from the title
 
-                    // Rysowanie numeru dnia
-                    ctx.fillStyle = '#333';
-                    ctx.font = 'bold 14px Arial';
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-                    ctx.fillText(day.getDate(), x + dayWidth / 2, y + dayHeight / 2);
+        // Draw calendar days
+        ctx.font = `${fontSize}px ${fontFamily}`;
+        ctx.textBaseline = 'middle';
+        for (let i = 0; i < totalDays; i++) {
+            const col = i % daysPerRow;
+            const row = Math.floor(i / daysPerRow);
 
-                    dayIndex++;
-                }
+            const x = startX + (col * (dayWidth + margin));
+            const y = startY + (row * (dayHeight + margin));
+
+            if (occupiedDays.includes(i + 1)) {
+                ctx.fillStyle = occupiedColor;
+            } else if (unavailableDays.includes(i + 1)) {
+                ctx.fillStyle = unavailableColor;
+            } else {
+                ctx.fillStyle = fontColor;
             }
+
+            ctx.fillText(i + 1, x + dayWidth / 2, y + dayHeight / 2);
         }
-    }
 
-    // Funkcja do zapisywania obrazu
-    function saveCanvasImage() {
-        const canvas = document.getElementById('canvas');
-        const imageUrl = canvas.toDataURL('image/png'); // Pobranie obrazu z canvas
-        const link = document.createElement('a');
-        link.href = imageUrl;
-        link.download = 'image_with_calendar.png'; // Określenie nazwy pliku
-        link.click(); // Rozpoczęcie pobierania
-    }
+        // Add descriptions below the calendar
+        const descriptions = ["Wolne", "Zajęte", "Niedostępne"];
+        const colors = [fontColor, occupiedColor, unavailableColor];
+        const startXText = canvas.width / 2; // Align to center
+        const startYText = startY + Math.ceil(totalDays / daysPerRow) * (dayHeight + margin) + 50;
 
-    const imageInput = document.getElementById('imageInput');
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    const sizeSelect = document.getElementById('imageSize');
+        ctx.font = `${fontSize}px ${fontFamily}`;
+        descriptions.forEach((text, index) => {
+            const x = startXText;
+            const y = startYText + (index * 30);
 
-    // Funkcja do zmiany rozmiaru canvas na podstawie wybranego rozmiaru
-    function updateCanvasSize(size) {
-        let width, height;
-        if (size === '540x960') {
-            width = 540;
-            height = 960;
-        } else if (size === '540x540') {
-            width = 540;
-            height = 540;
-        }
-        canvas.width = width;
-        canvas.height = height;
+            ctx.fillStyle = colors[index];
+            ctx.fillText(text, x, y);
+        });
 
-        // Aktualizacja szerokości i wysokości samego kontenera dla canvas
-        const canvasContainer = document.querySelector('.image-container');
-        canvasContainer.style.width = `${width}px`;
-        canvasContainer.style.height = `${height}px`;
-    }
+        // Display the result
+        const imageContainer = document.querySelector('.image-container');
+        imageContainer.innerHTML = '';
+        imageContainer.appendChild(canvas);
+    };
+}
 
-    imageInput.addEventListener('change', function (event) {
-        const file = event.target.files[0];
+
+const monthSelect = document.getElementById('monthSelect');
+monthSelect.addEventListener('change', updateCalendar);
+
+
+  
+
+    function updateCalendar() {
+        const file = imageInput.files[0];
+        const size = sizeSelect.value;
+        const totalDays = parseInt(dayCountSelect.value, 10);
+
         if (file) {
-            const size = sizeSelect.value;
             let width, height;
 
-            // Wybór rozmiaru na podstawie opcji
-            if (size === '540x960') {
+            if (size === "540x960") {
                 width = 540;
                 height = 960;
-            } else if (size === '540x540') {
+            } else {
                 width = 540;
                 height = 540;
             }
 
-            // Kompresja obrazu do zadanych wymiarów
-            compressImage(file, width, height, function (compressedDataUrl, canvas) {
-                const img = new Image();
-                img.onload = function () {
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height); // Rysujemy obraz (tło)
-                    drawCalendarOnCanvas(canvas, ctx); // Narysowanie kalendarza na canvasie
-                };
-                img.src = compressedDataUrl;
+            compressImage(file, width, height, function (compressedImageUrl) {
+                const fontSize = parseInt(fontSizeInput.value, 10);
+                const fontColor = fontColorInput.value;
+                const fontFamily = fontFamilyInput.value;
+                const occupiedColor = occupiedColorInput.value;
+                const unavailableColor = unavailableColorInput.value;
+                drawCalendarOnImage(compressedImageUrl, totalDays, fontSize, fontColor, fontFamily, occupiedColor, unavailableColor);
             });
         }
+    }
+
+    function populateOccupiedDays() {
+        const input = occupiedDaysInput.value.trim();
+        if (input) {
+            occupiedDays = input.split(',').map(day => parseInt(day.trim(), 10));
+        } else {
+            occupiedDays = [];
+        }
+    }
+
+    function populateUnavailableDays() {
+        const input = unavailableDaysInput.value.trim();
+        if (input) {
+            unavailableDays = input.split(',').map(day => parseInt(day.trim(), 10));
+        } else {
+            unavailableDays = [];
+        }
+    }
+
+    imageInput.addEventListener('change', updateCalendar);
+    sizeSelect.addEventListener('change', updateCalendar);
+    dayCountSelect.addEventListener('change', updateCalendar);
+    fontSizeInput.addEventListener('input', updateCalendar);
+    fontColorInput.addEventListener('input', updateCalendar);
+    fontFamilyInput.addEventListener('change', updateCalendar);
+    occupiedColorInput.addEventListener('input', updateCalendar);
+    unavailableColorInput.addEventListener('input', updateCalendar);
+    occupiedDaysInput.addEventListener('input', function () {
+        populateOccupiedDays();
+        updateCalendar();
+    });
+    unavailableDaysInput.addEventListener('input', function () {
+        populateUnavailableDays();
+        updateCalendar();
     });
 
-    // Nasłuchujemy zmiany rozmiaru i aktualizujemy rozmiar canvas
-    sizeSelect.addEventListener('change', function () {
-        const selectedSize = sizeSelect.value;
-        updateCanvasSize(selectedSize);
+    document.getElementById('saveButton').addEventListener('click', function () {
+        const canvas = document.querySelector('canvas');
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL();
+        link.download = 'calender_image.jpg';
+        link.click();
     });
-
-    // Inicjalizujemy początkowy rozmiar canvas
-    updateCanvasSize(sizeSelect.value);
-
-    // Nasłuchujemy kliknięcia w przycisk "Save Image" i zapisujemy obraz
-    document.getElementById('saveButton').addEventListener('click', function() {
-        saveCanvasImage();
-    });
-
 </script>
+
+
 </body>
 </html>
