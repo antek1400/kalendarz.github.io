@@ -1,0 +1,62 @@
+/* Styl kontenera kalendarza */
+.calendar-text {
+    position: absolute;
+    top: 50%; /* Wysokość 50% ekranu */
+    left: 50%; /* Szerokość 50% ekranu */
+    transform: translate(-50%, -50%); /* Przesunięcie, aby idealnie centrować kalendarz */
+    color: white;
+    font-size: 18px;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Tło kalendarza */
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+    width: 80%;  /* Dopasowanie szerokości kalendarza */
+    max-width: 400px; /* Maksymalna szerokość kalendarza */
+}
+
+/* Styl dla nagłówka kalendarza */
+.calendar-text h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #FFEB3B; /* Kolor tytułu */
+}
+
+/* Flexbox do rozmieszczenia dni w wierszach */
+.calendar-text div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Styl dla każdego dnia */
+.calendar-text div div {
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.7); /* Tło każdego dnia */
+    border-radius: 50%;
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+
+/* Styl pustych dni (np. brak dni w niektóre dni miesiąca) */
+.calendar-text div div.empty {
+    background-color: transparent;
+    cursor: default;
+}
+
+/* Dodatkowe stylizowanie dni weekendowych (np. soboty i niedziele) */
+.calendar-text div div.weekend {
+    background-color: rgba(255, 87, 34, 0.7); /* Tło dla weekendów (pomarańczowe) */
+    color: white;
+}
